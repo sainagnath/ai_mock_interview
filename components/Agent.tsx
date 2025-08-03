@@ -64,16 +64,35 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
 
     const handleCall = async () => {
         setCallStatus(CallStatus.CONNECTING);
-        console.log('VAPI_WEB_TOKEN:', process.env.NEXT_PUBLIC_VAPI_WEB_TOKEN);
-        console.log('VAPI_WORKFLOW_ID:', process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID);
-        console.log('Payload:', { variableValues: { username: userName, userid: userId } });
-        await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
-            variableValues: {
-                username: userName,
-                userid: userId,
-            }
-        })
-    }
+
+        if (type === "generate") {
+            await vapi.start(
+                undefined,
+                undefined,
+                undefined,
+                process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!,
+                {
+                    variableValues: {
+                        username: userName,
+                        userid: userId,
+                    },
+                }
+            );
+        } else {
+            // let formattedQuestions = "";
+            // if (questions) {
+            //     formattedQuestions = questions
+            //         .map((question) => `- ${question}`)
+            //         .join("\n");
+            // }
+
+            // await vapi.start(interviewer, {
+            //     variableValues: {
+            //         questions: formattedQuestions,
+            //     },
+            // });
+        }
+    };
 
     const handleDisconnect = async () => {
         setCallStatus(CallStatus.FINISHED);
