@@ -158,39 +158,35 @@ End the conversation on a polite and positive note.
   },
 };
 
+
+
 export const feedbackSchema = z.object({
   totalScore: z.number(),
-  categoryScores: z.tuple([
-    z.object({
-      name: z.literal("Communication Skills"),
-      score: z.number(),
-      comment: z.string(),
-    }),
-    z.object({
-      name: z.literal("Technical Knowledge"),
-      score: z.number(),
-      comment: z.string(),
-    }),
-    z.object({
-      name: z.literal("Problem Solving"),
-      score: z.number(),
-      comment: z.string(),
-    }),
-    z.object({
-      name: z.literal("Cultural Fit"),
-      score: z.number(),
-      comment: z.string(),
-    }),
-    z.object({
-      name: z.literal("Confidence and Clarity"),
-      score: z.number(),
-      comment: z.string(),
-    }),
-  ]),
-  strengths: z.array(z.string()),
-  areasForImprovement: z.array(z.string()),
-  finalAssessment: z.string(),
+
+  // Flattened version of the tuple – instruct Gemini to format manually
+  categoryScores: z.string().describe(
+    `Scores and comments for the following categories:
+    - Communication Skills
+    - Technical Knowledge
+    - Problem Solving
+    - Cultural Fit
+    - Confidence and Clarity
+    Format: Each category on a new line with its score and comment.`
+  ),
+
+  strengths: z.string().describe(
+    "Bullet point list of the candidate's strengths. Use '-' for bullets."
+  ),
+
+  areasForImprovement: z.string().describe(
+    "Bullet point list of areas where the candidate needs improvement. Use '-' for bullets."
+  ),
+
+  finalAssessment: z.string().describe(
+    "Final paragraph summarizing the candidate's performance and fit."
+  ),
 });
+
 
 export const interviewCovers = [
   "/adobe.png",
